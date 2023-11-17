@@ -8,14 +8,14 @@ name: Docker
 on:
   push:
     branches:
-      - "master"
+      - 'master'
     # Publish semver tags as releases.
     tags:
-      - '^[0-9]{8}$'
+      - '*'
   pull_request:
     branches:
-      - "master"
-      - "dev"
+      - 'master'
+      - 'dev'
 
 env:
   # Use docker.io for Docker Hub if empty
