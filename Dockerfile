@@ -1,3 +1,3 @@
-FROM traefik:2.11.3
+FROM traefik:v3.0.1
 COPY bengelca.crt /usr/local/share/ca-certificates/bengelca.crt
 RUN update-ca-certificates
