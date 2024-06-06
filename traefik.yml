@@ -1,0 +1,48 @@
+accessLog: true
+api:
+  dashboard: true
+  insecure: true
+certificatesResolvers:
+  step:
+    acme:
+      caserver: https://step.bengel.local/acme/acme/directory
+      tlsChallenge: true
+      email: admin@bengel.local
+      storage: acme.json
+      httpchallenge:
+        entrypoint: web
+entryPoints:
+  ping:
+    address: :8082
+  web:
+    address: :80
+    http:
+      redirections:
+        entryPoint:
+          permanent: true
+          scheme: https
+          to: webSecure
+  webSecure:
+    address: :443
+    http:
+      tls:
+        certResolver: step
+log:
+  level: INFO
+ping:
+  entryPoint: ping
+providers:
+  file:
+    watch: true
+    directory: "/etc/traefik/proxy.conf"
+serversTransport:
+  insecureSkipVerify: true
+metrics:
+  influxdb2:
+    address: https://influxdb.bengel.local
+    org: bengel
+    bucket: traefik
+    addEntryPointsLabels: true
+    addrouterslabels: true
+    addServicesLabels: true
+    token: oDuFrDg8uq2X5PjCTjQvZJz9MRZZtdS8LE3QKvXLm6B2BMlUdd6dZ04V11aLlXT_Xiojh9U9lZRjzgsfvmaXNQ==

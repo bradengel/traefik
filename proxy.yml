@@ -1,0 +1,112 @@
+http:
+  routers:
+    apc_http:
+      rule: Host(`apc.bengel.local`)
+      service: apc
+    deskswitch_http:
+      rule: Host(`ds.bengel.local`)
+      service: deskswitch
+    flights_http:
+      rule: Host(`flights.bengel.local`)
+      service: flights
+    mikro_http:
+      rule: Host(`mikroswitch.bengel.local`)
+      service: mikro
+    nut_http:
+      rule: Host(`nut-stats.bengel.local`)
+      service: nut
+    octopi_http:
+      rule: Host(`octoprint.bengel.local`)
+      service: octoprint
+    pve_http:
+      rule: Host(`pve.bengel.local`)
+      service: pve
+    ruckus_http:
+      rule: Host(`ruckus.bengel.local`)
+      service: ruckus
+    diskstation_http:
+      rule: Host(`synology.bengel.local`)
+      service: diskstation
+    videostation_http:
+      rule: Host(`videostation.bengel.local`)
+      service: diskstation
+      middlewares:
+        - "videostation"
+    semaphore_http:
+      rule: Host(`ansible-semaphore.bengel.local`)
+      service: semaphore
+    birdnetpi_http:
+      rule: Host(`birds.bengel.local`)
+      service: birdnetpi
+    videos_http:
+      rule: Host(`videos.bengel.local`)
+      service: jellyfin
+    dashboard_http:
+      rule: Host(`proxy.bengel.local`)
+      service: dashboard
+    pve00_http:
+      rule: Host(`pve0.bengel.local`)
+      service: pve00
+  middlewares:
+    videostation:
+      redirectRegex:
+        regex: "^https://videos\\.bengel\\.local/(.*)"
+        replacement: "https://synology.bengel.local/?launchApp=SYNO.SDS.VideoStation.AppInstance"
+        permanent: true
+  services:
+    apc:
+      loadBalancer:
+        servers:
+          - url: "https://srt1500.bengel.local"
+    deskswitch:
+      loadBalancer:
+        servers:
+          - url: "http://deskswitch.bengel.local"
+    flights:
+      loadBalancer:
+        servers:
+          - url: "http://piaware.bengel.local:8080/"
+    mikro:
+      loadBalancer:
+        servers:
+          - url: "http://mikro.bengel.local"
+    nut:
+      loadBalancer:
+        servers:
+          - url: "http://nut.bengel.local/"
+    octoprint:
+      loadBalancer:
+        servers:
+          - url: "http://octopi.bengel.local:5000"
+    pve:
+      loadBalancer:
+        servers:
+          - url: "https://pve01.bengel.local:8006"
+    ruckus:
+      loadBalancer:
+        servers:
+          - url: "https://ap01.bengel.local"
+    diskstation:
+      loadBalancer:
+        servers:
+          - url: "https://diskstation.bengel.local:5001"
+    birdnetpi:
+      loadBalancer:
+        servers:
+          - url: "http://birdnetpi.bengel.local"
+    jellyfin:
+      loadBalancer:
+        servers:
+          - url: "http://jellyfin.bengel.local:8096/web/index.html"
+    semaphore:
+      loadbalancer:
+        servers:
+          - url: "http://semaphore.bengel.local:3000"
+    dashboard:
+      loadbalancer:
+        servers:
+          - url: "http://127.0.0.1:8080/api"
+    pve00:
+      loadbalancer:
+        servers:
+          - url: "https://10.0.0.14:8006
